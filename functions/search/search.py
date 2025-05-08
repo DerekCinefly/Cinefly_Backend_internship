@@ -1,14 +1,14 @@
-from utils.handler import promiseHandler, withCurrentUser
+from typing import Dict
+from utils.handler import promise_handler, with_current_user
 from aws_lambda import APIGatewayProxyEventV2
 from services.elasticsearch import searchScripts, scriptIndexName, searchListings, listingIndexName, userIndexName, searchUsers, assetIndexName, searchAssets, reusableAssetIndexName, searchReusableAssets
-from model.cineflyuser import CineflyUserProfile
 
 
 #  Searches the indexed scripts/listings from the Elasticsearch based on the provided index name in path.
  
 #  Admin can see all data, normal Customer can only search their own data.
 
-async def search(event: APIGatewayProxyEventV2, current_user_profile: CineflyUserProfile) -> dict:
+async def search(event: APIGatewayProxyEventV2, current_user_profile) -> Dict:
     authorizer = event["requestContext"].get("authorizer", {}).get("lambda", {})
     user_groups = authorizer.get("cognito:groups", [])
     search_index = event.get("pathParameters", {}).get("searchIndex")
@@ -51,4 +51,4 @@ async def search(event: APIGatewayProxyEventV2, current_user_profile: CineflyUse
 
     return {"result": None}
 
-defaultHandler = promiseHandler(withCurrentUser(search))
+defaultHandler = promise_handler(with_current_user(search))

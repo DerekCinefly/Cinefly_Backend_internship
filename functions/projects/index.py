@@ -1,9 +1,9 @@
-from utils.handler import handlerPath
+from utils.handler import handler_path
 from resources.network import cineflyVpcConfigs
 
 
 getProjectByProjectCode = {  
-  'handler': f'{handlerPath(__dirname)}/projects.defaultHandler',
+  'handler': f'{handler_path(__dirname)}/projects.defaultHandler',
   'vpc' : cineflyVpcConfigs,
   'events': [
     {
